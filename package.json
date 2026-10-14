@@ -1,6 +1,6 @@
 {
-  "name": "dsh-auto-folder",
-  "version": "1.0.1",
+  "name": "dsh-auto-create-folder",
+  "version": "1.1.0",
   "description": "Auto-create a per-task folder in the workspace before creating new files, and redirect creations into it.",
   "type": "module",
   "main": "lib/auto-folder.js",

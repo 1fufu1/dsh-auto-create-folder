@@ -1,5 +1,5 @@
 node_modules/
-.dsh-auto-folder.json
+.dsh-auto-create-folder.json
 *.log
 .DS_Store
 Thumbs.db

@@ -1,4 +1,4 @@
-# dsh-auto-folder
+# dsh-auto-create-folder
 
 【懒人插件】在开始项目前无需自己创建文件夹，会自动创建一个总文件，后面的项目都在这里面完成。
 在 **设置 → 通用设置** 里有一个「自动创建文件夹」开关，默认开启，切换后立即生效、无需重启。
@@ -21,7 +21,7 @@
 | 名字被**别的会话**占了，或同名位置被文件占住 | 才加 `-2`、`-3` 后缀 |
 | 文件夹名含 `<>:"/\|?*`、控制字符、超长 | 非法字符替换为 `_`，长度截断到 40 字符 |
 
-状态记录在工作区根目录的 `.dsh-auto-folder.json`（会话 id → 文件夹名），用于重启/重载后继续复用同一个文件夹。
+状态记录在工作区根目录的 `.dsh-auto-create-folder.json`（会话 id → 文件夹名），用于重启/重载后继续复用同一个文件夹。
 
 ## 设置开关
 
@@ -34,7 +34,7 @@
 
 ```
 插件/
-  package.json        包名 dsh-auto-folder；dsh.client 声明浏览器端
+  package.json        包名 dsh-auto-create-folder；dsh.client 声明浏览器端
   cordis.patch.yml    bundle 安装方式用的 patch 层（id: auto-folder）
   lib/auto-folder.js  服务端插件（拦截 + 重定向 + Config）
   lib/client.js       浏览器端插件（通用设置里的开关行）
@@ -51,7 +51,7 @@
 4. 被包裹的 `service.writeText()` 在真正写盘前，把“武装”过的 target 的 `displayPath` / `targetKey` 改到任务文件夹里，
    所以不仅文件落点变了，模型看到并回报的路径也是新路径；
 5. `editText()` 只解除武装（编辑已有文件不搬运）；
-6. profile 重载会**替换** `fs` 服务实例，所以每次工具调用都会调用 `ensurePatched()`（WeakSet + `Symbol.for("dsh-auto-folder.patched")`）重新包裹新实例。
+6. profile 重载会**替换** `fs` 服务实例，所以每次工具调用都会调用 `ensurePatched()`（WeakSet + `Symbol.for("dsh-auto-create-folder.patched")`）重新包裹新实例。
 
 ## 安装与启用
 
@@ -73,7 +73,7 @@
 ```powershell
 # 在 profile 目录（C:\Users\HP\.dsh\profiles\desktop）里执行：
 pnpm add "D:\DSH工作区\插件"
-# 然后把 "dsh-auto-folder" 追加到该目录 package.json 的 dsh.profile.bundles 列表
+# 然后把 "dsh-auto-create-folder" 追加到该目录 package.json 的 dsh.profile.bundles 列表
 ```
 
 ### 方式 C（从 GitHub 安装）
@@ -82,10 +82,10 @@ pnpm add "D:\DSH工作区\插件"
 # 在 profile 目录（C:\Users\HP\.dsh\profiles\desktop）里执行：
 pnpm add "github:1fufu1/dsh-auto-create-folder"
 # 或者：pnpm add "git+https://github.com/1fufu1/dsh-auto-create-folder.git"
-# 然后把 "dsh-auto-folder" 追加到该目录 package.json 的 dsh.profile.bundles 列表
+# 然后把 "dsh-auto-create-folder" 追加到该目录 package.json 的 dsh.profile.bundles 列表
 ```
 
-仓库：<https://github.com/1fufu1/dsh-auto-create-folder>（仓库名叫 dsh-auto-create-folder，包名仍是 `dsh-auto-folder`）。
+仓库：<https://github.com/1fufu1/dsh-auto-create-folder>（仓库名与包名一致）。
 
 两种方式**只用一种**，否则会出现两个条目、两个开关。
 

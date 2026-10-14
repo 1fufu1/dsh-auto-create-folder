@@ -1,4 +1,4 @@
-// Smoke test for the dsh-auto-folder CLIENT bundle.
+// Smoke test for the dsh-auto-create-folder CLIENT bundle.
 // Evaluates lib/client.js against a stub window.__ModuleLoader__ and renders the settings row.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -16,7 +16,7 @@ const fakeWindow = { __ModuleLoader__: { load: (d) => { def = d; } } };
 const code = readFileSync(join(import.meta.dirname, "..", "lib", "client.js"), "utf8");
 try { new Function("window", code)(fakeWindow); } catch (e) { check("bundle evaluates", false, e.message); }
 check("bundle evaluates", !!def, "no load() call");
-check("bundle id", def && def.id === "dsh-auto-folder", def && def.id);
+check("bundle id", def && def.id === "dsh-auto-create-folder", def && def.id);
 check("bundle factory", !!def && typeof def.factory === "function");
 
 // ---- stub requires -------------------------------------------------------

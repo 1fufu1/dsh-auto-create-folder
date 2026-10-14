@@ -1,4 +1,4 @@
-// Test suite for the dsh-auto-folder server plugin (lib/auto-folder.js).
+// Test suite for the dsh-auto-create-folder server plugin (lib/auto-folder.js).
 // Stubs a Cordis ctx, a Session, and the fs service, then drives the write path.
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -107,7 +107,7 @@ check("new file lands in the task folder", t1.displayPath === join(folder1, "log
 check("targetKey follows the display path", t1.targetKey === t1.displayPath, t1.targetKey);
 check("file really exists inside the folder", existsSync(join(folder1, "login.tsx")));
 check("file is not at the old path", !existsSync(join(ws1, "login.tsx")));
-const state1 = JSON.parse(readFileSync(join(ws1, ".dsh-auto-folder.json"), "utf8"));
+const state1 = JSON.parse(readFileSync(join(ws1, ".dsh-auto-create-folder.json"), "utf8"));
 check("folder recorded per session", state1.s1 === "构建登录页面", JSON.stringify(state1));
 
 // relative sub path is preserved
@@ -178,7 +178,7 @@ check("an existing folder is reused, not duplicated", n3.displayPath === join(ws
 check("no sibling folder was created", !existsSync(join(ws7, "同名任务-2")));
 const ws7b = newWorkspace();
 mkdirSync(join(ws7b, "同名任务"));
-writeFileSync(join(ws7b, ".dsh-auto-folder.json"), JSON.stringify({ other: "同名任务" }));
+writeFileSync(join(ws7b, ".dsh-auto-create-folder.json"), JSON.stringify({ other: "同名任务" }));
 const s7b = makeSession(ws7b, [titleEvent("同名任务")], "s7b");
 const n3b = await toolWrite(env2, s7b, join(ws7b, "z.txt"), "1");
 check("name claimed by another session gets a suffix", n3b.displayPath === join(ws7b, "同名任务-2", "z.txt"), n3b.displayPath);
@@ -216,7 +216,7 @@ const s11 = makeSession(ws11, [userEvent("请把所有东西放在 " + given11 +
 const t11 = await toolWrite(env, s11, join(ws11, "main.py"), "1");
 check("a folder named in the request wins over the task name", t11.displayPath === join(given11, "main.py"), t11.displayPath);
 check("that folder is created on the spot", existsSync(given11));
-const state11 = JSON.parse(readFileSync(join(ws11, ".dsh-auto-folder.json"), "utf8"));
+const state11 = JSON.parse(readFileSync(join(ws11, ".dsh-auto-create-folder.json"), "utf8"));
 check("the given folder is recorded for the session", state11.s11 === "期末大作业", JSON.stringify(state11));
 
 const ws12 = newWorkspace();
