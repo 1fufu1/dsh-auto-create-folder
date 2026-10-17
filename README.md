@@ -2,6 +2,7 @@
 
 【懒人插件】在开始项目前无需自己创建文件夹，会自动创建一个总文件，后面的项目都在这里面完成。
 在 **设置 → 通用设置** 里有一个「自动创建文件夹」开关，默认开启，切换后立即生效、无需重启。
+兼容性：DSH 0.2.1-rc.2（Cordis 4.0.5）；服务端 51 项 / 客户端 34 项断言全部通过。
 
 ## 行为规则
 
@@ -38,7 +39,7 @@
   cordis.patch.yml    bundle 安装方式用的 patch 层（id: auto-folder）
   lib/auto-folder.js  服务端插件（拦截 + 重定向 + Config）
   lib/client.js       浏览器端插件（通用设置里的开关行）
-  test/smoke.mjs      服务端 49 项断言
+  test/smoke.mjs      服务端 51 项断言
   test/client.mjs     客户端 34 项断言
 ```
 
@@ -100,7 +101,7 @@ pnpm add "github:1fufu1/dsh-auto-create-folder"
 
 ```powershell
 cd "D:\DSH工作区\插件"
-node test/smoke.mjs    # 服务端：PASS 49  FAIL 0
+node test/smoke.mjs    # 服务端：PASS 51  FAIL 0
 node test/client.mjs   # 客户端：PASS 34  FAIL 0
 ```
 

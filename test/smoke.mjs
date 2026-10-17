@@ -252,6 +252,31 @@ const s16 = makeSession(ws16, [userEvent("就在 还没建的文件夹 里做"),
 const t16 = await toolWrite(env, s16, join(ws16, "e.txt"), "6");
 check("a name that does not exist keeps the task folder", t16.displayPath === join(ws16, "新项目", "e.txt"), t16.displayPath);
 
+// ---- 10. current DSH resolves the workspace root before the target -------
+const ws17 = newWorkspace();
+const s17 = makeSession(ws17, [titleEvent("额外解析")], "s17");
+const exec17 = { name: "write", arguments: { file_path: join(ws17, "p.txt"), content: "1" }, agent: { session: s17 } };
+let k17 = 0;
+const next17 = async () => { const fn = env.listeners[k17++]; if (!fn) return undefined; return await fn(exec17, next17); };
+await next17();
+const svc17 = env.fs();
+await svc17.resolve(ws17);
+const t17 = await svc17.resolve(join(ws17, "p.txt"), { cwd: ws17 });
+await svc17.writeText(t17, "1", undefined, undefined, undefined);
+check("a cwd-less root resolve does not steal the pending entry", t17.displayPath === join(ws17, "额外解析", "p.txt"), t17.displayPath);
+
+const ws18 = newWorkspace();
+const s18 = makeSession(ws18, [titleEvent("连续解析")], "s18");
+const exec18 = { name: "write", arguments: { file_path: join(ws18, "q.txt"), content: "1" }, agent: { session: s18 } };
+let k18 = 0;
+const next18 = async () => { const fn = env.listeners[k18++]; if (!fn) return undefined; return await fn(exec18, next18); };
+await next18();
+const svc18 = env.fs();
+await svc18.resolve(join(ws18, "q.txt"), { cwd: ws18 });
+const t18 = await svc18.resolve(join(ws18, "q.txt"), { cwd: ws18 });
+await svc18.writeText(t18, "1", undefined, undefined, undefined);
+check("a repeated resolve for one call still redirects", t18.displayPath === join(ws18, "连续解析", "q.txt"), t18.displayPath);
+
 try { rmSync(WORK, { recursive: true, force: true }); } catch {}
 try { rmSync(OUTSIDE, { force: true }); } catch {}
 console.log("PASS " + pass + "  FAIL " + fail);
